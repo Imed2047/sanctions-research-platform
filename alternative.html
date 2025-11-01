@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanctions Research Platform - Alternative Version</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .demo-banner {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .content {
+            padding: 3rem;
+        }
+
+        .search-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: 2px solid #e9ecef;
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .search-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.9rem;
+        }
+
+        .filter-select {
+            padding: 0.8rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            background: white;
+        }
+
+        .results-section {
+            margin-top: 2rem;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .results-count {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .results-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .entity-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .entity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            border-color: #3498db;
+        }
+
+        .entity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .entity-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .entity-type {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .risk-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .risk-high {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .risk-medium {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+        }
+
+        .risk-low {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+        }
+
+        .entity-summary {
+            color: #5d6d7e;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .entity-meta {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideIn 0.3s ease;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: #c0392b;
+            transform: scale(1.1);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .deployment-options {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-radius: 15px;
+        }
+
+        .deployment-options h3 {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .deployment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .deployment-card {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .deployment-card h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .deployment-card p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .content {
+                padding: 2rem;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .results-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .deployment-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>
+                <i class="fas fa-search"></i>
+                Sanctions Research Platform
+            </h1>
+            <p>Recherche avancée dans les bases de données de sanctions internationales</p>
+        </header>
+
+        <div class="demo-banner">
+            <i class="fas fa-info-circle"></i>
+            Version de démonstration - Données simulées pour illustration
+        </div>
+
+        <div class="content">
+            <div class="search-section">
+                <form class="search-form" id="searchForm">
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        id="searchInput"
+                        placeholder="Rechercher des entités sanctionnées..."
+                        value="putin"
+                    >
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-search"></i>
+                        Rechercher
+                    </button>
+                </form>
+
+                <div class="filters">
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="fas fa-users"></i> Type d'Entité
+                        </label>
+                        <select class="filter-select" id="typeFilter">
+                            <option value="">Tous les types</option>
+                            <option value="Person">Personne</option>
+                            <option value="Organization">Organisation</option>
+                            <option value="Vessel">Navire</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="fas fa-exclamation-triangle"></i> Niveau de Risque
+                        </label>
+                        <select class="filter-select" id="riskFilter">
+                            <option value="">Tous les niveaux</option>
+                            <option value="HIGH">Élevé</option>
+                            <option value="MEDIUM">Moyen</option>
+                            <option value="LOW">Faible</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="fas fa-globe"></i> Pays
+                        </label>
+                        <select class="filter-select" id="countryFilter">
+                            <option value="">Tous les pays</option>
+                            <option value="RU">Russie</option>
+                            <option value="IQ">Irak</option>
+                            <option value="IR">Iran</option>
+                            <option value="SY">Syrie</option>
+                            <option value="KP">Corée du Nord</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <div class="results-header">
+                    <div class="results-count" id="resultsCount">6 entités trouvées</div>
+                </div>
+                
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Recherche en cours...</p>
+                </div>
+                
+                <div class="results-grid" id="resultsGrid">
+                    <!-- Results will be populated here -->
+                </div>
+            </div>
+
+            <!-- Deployment Options -->
+            <div class="deployment-options">
+                <h3>
+                    <i class="fas fa-rocket"></i>
+                    Options de Déploiement
+                </h3>
+                <p>Cette version peut être déployée facilement sur différentes plateformes :</p>
+                
+                <div class="deployment-grid">
+                    <div class="deployment-card">
+                        <h4><i class="fab fa-github"></i> GitHub Pages</h4>
+                        <p>Gratuit, hôte statique, mise à jour automatique</p>
+                    </div>
+                    <div class="deployment-card">
+                        <h4><i class="fas fa-cloud"></i> Netlify</h4>
+                        <p>Déploiement rapide, CDN global, domain personnalisé</p>
+                    </div>
+                    <div class="deployment-card">
+                        <h4><i class="fab fa-aws"></i> Vercel</h4>
+                        <p>Performances optimisées, Edge network, versionning</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Entity Detail Modal -->
+    <div class="modal" id="entityModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div id="modalContent">
+                <!-- Entity details will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Same data as the first version but with enhanced styling
+        const sanctionsData = [
+            {
+                id: 'ofac_001',
+                name: 'VLADIMIR VLADIMIROVICH PUTIN',
+                type: 'Person',
+                aliases: [{ name: 'Vladimir Putin', type: 'aka', quality: 'exact' }],
+                birth_date: '1952-10-07',
+                nationality: 'Russian',
+                country_of_residence: 'Russia',
+                countries: ['RU'],
+                addresses: [{ address: 'Presidential Administration', city: 'Moscow', country: 'Russia' }],
+                keywords: ['HEAD_OF_STATE', 'UKRAINE_RELATED'],
+                source: 'ofac',
+                source_url: 'https://ofac.treas.gov/',
+                risk_level: 'HIGH',
+                summary: 'Current President of Russia • Head of State • Ukraine-Related Sanctions',
+                last_updated: new Date().toISOString(),
+                details: {
+                    positions: ['President of Russia', 'Former KGB Officer'],
+                    sanctions: ['EU Sanctions (2022)', 'US OFAC SDN (2022)', 'UK Sanctions (2022)'],
+                    relationships: ['Russian Government', 'Security Services'],
+                    narrative: 'Vladimir Putin has been subject to multiple sanctions packages following the 2022 invasion of Ukraine. These sanctions target his inner circle and key supporters.',
+                    financials: ['Frozen assets in EU', 'Travel bans', 'Asset freezes'],
+                    associations: ['KGB/FSB', 'St. Petersburg KGB', 'Russian Orthodox Church']
+                }
+            },
+            {
+                id: 'ofac_002',
+                name: 'ROSOBORONEXPORT',
+                type: 'Organization',
+                aliases: [{ name: 'Rosoboronexport', type: 'aka', quality: 'exact' }],
+                nationality: 'Russian',
+                country_of_residence: 'Russia',
+                countries: ['RU'],
+                addresses: [{ address: '21/5 ul. Voznesensky', city: 'Moscow', country: 'Russia' }],
+                keywords: ['DEFENSE_COMPANY'],
+                source: 'ofac',
+                source_url: 'https://ofac.treas.gov/',
+                risk_level: 'MEDIUM',
+                summary: 'Russian Defense Company',
+                last_updated: new Date().toISOString(),
+                details: {
+                    activities: ['Defense Exports', 'Military Equipment'],
+                    sanctions: ['EU Sanctions (2014)', 'US OFAC (2014)'],
+                    relationships: ['Russian Government', 'Ministry of Defense'],
+                    narrative: 'Rosoboronexport is Russia\'s state intermediary for import and export of military and dual-use goods, services and technologies.',
+                    financials: ['Export restrictions', 'Banking sanctions'],
+                    associations: ['State Corporation Rostec', 'Russian Ministry of Defense']
+                }
+            },
+            {
+                id: 'ofac_003',
+                name: 'ALI HASSAN AL-MAJID',
+                type: 'Person',
+                aliases: [{ name: 'Chemical Ali', type: 'aka', quality: 'nickname' }],
+                birth_date: '1941-03-30',
+                nationality: 'Iraqi',
+                country_of_residence: 'Iraq',
+                countries: ['IQ'],
+                addresses: [{ address: '', city: 'Baghdad', country: 'Iraq' }],
+                keywords: ['CHEMICAL_WEAPONS'],
+                source: 'ofac',
+                source_url: 'https://ofac.treas.gov/',
+                risk_level: 'HIGH',
+                summary: 'Iraqi Political Figure • Chemical Weapons • Former Regime',
+                last_updated: new Date().toISOString(),
+                details: {
+                    positions: ['Cousin of Saddam Hussein', 'Former Iraqi Official'],
+                    sanctions: ['UN Sanctions (2003)', 'US OFAC (2003)'],
+                    relationships: ['Ba\'ath Party', 'Iraqi Government'],
+                    narrative: 'Ali Hassan al-Majid was a Iraqi politician known for his role in the Anfal campaign and use of chemical weapons against Kurdish populations.',
+                    financials: ['Asset freezes', 'Travel bans'],
+                    associations: ['Saddam Hussein family', 'Ba\'ath Party military wing']
+                }
+            },
+            {
+                id: 'un_001',
+                name: 'QASEM SOLEIMANI',
+                type: 'Person',
+                aliases: [{ name: 'Qasem Soleimani', type: 'aka', quality: 'exact' }],
+                birth_date: '1957-03-11',
+                nationality: 'Iranian',
+                country_of_residence: 'Iran',
+                countries: ['IR'],
+                addresses: [{ address: 'Quds Force Headquarters', city: 'Tehran', country: 'Iran' }],
+                keywords: ['IRGC_QF', 'TERRORISM'],
+                source: 'un',
+                source_url: 'https://www.un.org/securitycouncil/sanctions/1988',
+                risk_level: 'HIGH',
+                summary: 'Former IRGC Quds Force Commander • Terrorism Sanctions',
+                last_updated: new Date().toISOString(),
+                details: {
+                    positions: ['Former Commander IRGC Quds Force'],
+                    sanctions: ['UN Sanctions (2007)', 'US OFAC (2005)'],
+                    relationships: ['IRGC', 'Iranian Government'],
+                    narrative: 'Qasem Soleimani was the commander of the IRGC Quds Force and was responsible for external military operations. He was killed in a US drone strike in 2020.',
+                    financials: ['Asset freezes', 'Travel bans', 'Banking restrictions'],
+                    associations: ['IRGC Quds Force', 'Iranian Revolutionary Guard']
+                }
+            },
+            {
+                id: 'eu_001',
+                name: 'BAHASAR AL-ASSAD',
+                type: 'Person',
+                aliases: [{ name: 'Bashar al-Assad', type: 'aka', quality: 'exact' }],
+                birth_date: '1965-09-11',
+                nationality: 'Syrian',
+                country_of_residence: 'Syria',
+                countries: ['SY'],
+                addresses: [{ address: 'Presidential Palace', city: 'Damascus', country: 'Syria' }],
+                keywords: ['HEAD_OF_STATE', 'SYRIA_CONFLICT'],
+                source: 'eu',
+                source_url: 'https://www.consilium.europa.eu/en/foreign-policy/sanctions/',
+                risk_level: 'HIGH',
+                summary: 'President of Syria • Syria Conflict • Human Rights Violations',
+                last_updated: new Date().toISOString(),
+                details: {
+                    positions: ['President of Syria'],
+                    sanctions: ['EU Sanctions (2011)', 'US OFAC (2011)', 'UK Sanctions (2011)'],
+                    relationships: ['Syrian Government', 'Alawite Community'],
+                    narrative: 'Bashar al-Assad has been subject to sanctions for his role in the Syrian conflict and human rights violations.',
+                    financials: ['Asset freezes', 'Travel bans', 'Banking restrictions'],
+                    associations: ['Syrian Arab Army', 'Alawite political elite']
+                }
+            },
+            {
+                id: 'uk_001',
+                name: 'KIM JONG-UN',
+                type: 'Person',
+                aliases: [{ name: 'Kim Jong-un', type: 'aka', quality: 'exact' }],
+                birth_date: '1984-02-08',
+                nationality: 'North Korean',
+                country_of_residence: 'North Korea',
+                countries: ['KP'],
+                addresses: [{ address: 'State Affairs Commission', city: 'Pyongyang', country: 'North Korea' }],
+                keywords: ['HEAD_OF_STATE', 'WMD'],
+                source: 'uk',
+                source_url: 'https://www.gov.uk/government/collections/sanctions-consolidated-list',
+                risk_level: 'HIGH',
+                summary: 'Supreme Leader of North Korea • WMD Program',
+                last_updated: new Date().toISOString(),
+                details: {
+                    positions: ['Supreme Leader of North Korea'],
+                    sanctions: ['UN Sanctions (2006)', 'EU Sanctions (2006)', 'UK Sanctions (2006)', 'US OFAC (2008)'],
+                    relationships: ['Korean Workers Party', 'Military'],
+                    narrative: 'Kim Jong-un has been subject to sanctions for North Korea\'s weapons of mass destruction programs and human rights violations.',
+                    financials: ['Asset freezes', 'Travel bans', 'Nuclear sanctions'],
+                    associations: ['Korean Workers Party', 'Korean People\'s Army']
+                }
+            }
+        ];
+
+        // Same JavaScript functions as before but with enhanced UI
+        let currentResults = [];
+        let currentFilters = {
+            query: '',
+            type: '',
+            risk: '',
+            country: ''
+        };
+
+        // DOM Elements
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+        const typeFilter = document.getElementById('typeFilter');
+        const riskFilter = document.getElementById('riskFilter');
+        const countryFilter = document.getElementById('countryFilter');
+        const resultsGrid = document.getElementById('resultsGrid');
+        const resultsCount = document.getElementById('resultsCount');
+        const loading = document.getElementById('loading');
+        const entityModal = document.getElementById('entityModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalContent = document.getElementById('modalContent');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            performSearch();
+
+            searchForm.addEventListener('submit', handleSearch);
+            typeFilter.addEventListener('change', handleFilterChange);
+            riskFilter.addEventListener('change', handleFilterChange);
+            countryFilter.addEventListener('change', handleFilterChange);
+            modalClose.addEventListener('click', closeModal);
+            entityModal.addEventListener('click', function(e) {
+                if (e.target === entityModal) closeModal();
+            });
+        });
+
+        function handleSearch(e) {
+            e.preventDefault();
+            currentFilters.query = searchInput.value.trim();
+            performSearch();
+        }
+
+        function handleFilterChange() {
+            currentFilters.type = typeFilter.value;
+            currentFilters.risk = riskFilter.value;
+            currentFilters.country = countryFilter.value;
+            performSearch();
+        }
+
+        function performSearch() {
+            showLoading(true);
+
+            setTimeout(() => {
+                const filtered = filterResults();
+                displayResults(filtered);
+                showLoading(false);
+            }, 300);
+        }
+
+        function filterResults() {
+            return sanctionsData.filter(entity => {
+                if (currentFilters.query) {
+                    const query = currentFilters.query.toLowerCase();
+                    const matchesName = entity.name.toLowerCase().includes(query);
+                    const matchesAliases = entity.aliases.some(alias => 
+                        alias.name.toLowerCase().includes(query)
+                    );
+                    const matchesKeywords = entity.keywords.some(keyword =>
+                        keyword.toLowerCase().includes(query)
+                    );
+                    
+                    if (!matchesName && !matchesAliases && !matchesKeywords) {
+                        return false;
+                    }
+                }
+
+                if (currentFilters.type && entity.type !== currentFilters.type) {
+                    return false;
+                }
+
+                if (currentFilters.risk && entity.risk_level !== currentFilters.risk) {
+                    return false;
+                }
+
+                if (currentFilters.country && !entity.countries.includes(currentFilters.country)) {
+                    return false;
+                }
+
+                return true;
+            });
+        }
+
+        function displayResults(results) {
+            currentResults = results;
+            resultsCount.textContent = `${results.length} entités trouvées`;
+
+            if (results.length === 0) {
+                resultsGrid.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #7f8c8d;">
+                        <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <h3>Aucun résultat trouvé</h3>
+                        <p>Essayez de modifier vos critères de recherche.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            resultsGrid.innerHTML = results.map(entity => `
+                <div class="entity-card" onclick="showEntityDetails('${entity.id}')">
+                    <div class="entity-header">
+                        <div>
+                            <h3 class="entity-name">${entity.name}</h3>
+                            <div class="entity-type">${entity.type}</div>
+                        </div>
+                        <span class="risk-badge risk-${entity.risk_level.toLowerCase()}">
+                            <i class="fas fa-exclamation-triangle"></i> ${entity.risk_level}
+                        </span>
+                    </div>
+                    
+                    <p class="entity-summary">${entity.summary}</p>
+                    
+                    <div class="entity-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-flag"></i> ${entity.nationality}
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-database"></i> ${entity.source.toUpperCase()}
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i> ${formatDate(entity.last_updated)}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showEntityDetails(entityId) {
+            const entity = sanctionsData.find(e => e.id === entityId);
+            if (!entity) return;
+
+            const detailsHtml = `
+                <h2 style="color: #2c3e50; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem;">
+                    <i class="fas fa-user-shield" style="color: #e74c3c;"></i>
+                    ${entity.name}
+                </h2>
+                
+                <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 1.5rem; border-radius: 15px; margin-bottom: 2rem;">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1rem; align-items: center;">
+                        <span class="entity-type" style="color: white; font-size: 1rem;">${entity.type}</span>
+                        <span class="risk-badge risk-${entity.risk_level.toLowerCase()}" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);">${entity.risk_level}</span>
+                    </div>
+                    <p style="line-height: 1.6;">${entity.details.narrative}</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                    <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 15px;">
+                        <h4 style="color: #2c3e50; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-id-card"></i>
+                            Informations Personnelles
+                        </h4>
+                        ${entity.birth_date ? `<p><strong><i class="fas fa-calendar"></i> Date de naissance:</strong> ${formatDate(entity.birth_date)}</p>` : ''}
+                        <p><strong><i class="fas fa-flag"></i> Nationalité:</strong> ${entity.nationality}</p>
+                        <p><strong><i class="fas fa-map-marker-alt"></i> Lieu de résidence:</strong> ${entity.country_of_residence}</p>
+                        ${entity.addresses.length > 0 ? `<p><strong><i class="fas fa-home"></i> Adresse:</strong> ${entity.addresses[0].address}</p>` : ''}
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 15px;">
+                        <h4 style="color: #2c3e50; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-ban"></i>
+                            Sanctions Appliquées
+                        </h4>
+                        <ul style="padding-left: 1rem;">
+                            ${entity.details.sanctions.map(sanction => `<li style="margin-bottom: 0.5rem;"><i class="fas fa-check-circle" style="color: #27ae60;"></i> ${sanction}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 15px; margin-bottom: 2rem;">
+                    <h4 style="color: #2c3e50; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-tags"></i>
+                        Alias Connus
+                    </h4>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                        ${entity.aliases.map(alias => `<span style="background: #3498db; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.9rem;">${alias.name} (${alias.quality})</span>`).join('')}
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #3498db, #2980b9); color: white; padding: 1.5rem; border-radius: 15px;">
+                    <h4 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-info-circle"></i>
+                        Informations Sources
+                    </h4>
+                    <p><strong><i class="fas fa-database"></i> Source:</strong> <a href="${entity.source_url}" target="_blank" style="color: #f1c40f;">${entity.source.toUpperCase()}</a></p>
+                    <p><strong><i class="fas fa-clock"></i> Dernière mise à jour:</strong> ${formatDate(entity.last_updated)}</p>
+                </div>
+            `;
+
+            modalContent.innerHTML = detailsHtml;
+            entityModal.classList.add('show');
+        }
+
+        function closeModal() {
+            entityModal.classList.remove('show');
+        }
+
+        function showLoading(show) {
+            if (show) {
+                loading.classList.add('show');
+                resultsGrid.style.display = 'none';
+            } else {
+                loading.classList.remove('show');
+                resultsGrid.style.display = 'grid';
+            }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-FR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanctions Research Platform</title>
+    
+    <!-- Preload Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Variables - Design System */
+        :root {
+            --primary-50: #EBF5FF;
+            --primary-500: #007AFF;
+            --primary-700: #0056B3;
+            
+            --neutral-50: #F8F9FA;
+            --neutral-100: #FFFFFF;
+            --neutral-400: #6C757D;
+            --neutral-600: #495057;
+            --neutral-900: #212529;
+            
+            --success-500: #28A745;
+            --warning-500: #FFC107;
+            --error-500: #DC3545;
+            
+            --space-xs: 8px;
+            --space-sm: 16px;
+            --space-md: 24px;
+            --space-lg: 32px;
+            --space-xl: 48px;
+            --space-xxl: 64px;
+            --space-xxxl: 96px;
+            
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --shadow-md: 0px 4px 12px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0px 8px 24px rgba(0, 0, 0, 0.08);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --transition-normal: 200ms ease-out;
+            --transition-slow: 250ms cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--neutral-900);
+            background-color: var(--neutral-50);
+        }
+
+        /* Layout */
+        .app {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-lg);
+            flex: 1;
+        }
+
+        /* Header */
+        .header {
+            background: var(--neutral-100);
+            border-bottom: 1px solid #E5E7EB;
+            box-shadow: var(--shadow-sm);
+            padding: var(--space-md) 0;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--primary-500);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--neutral-900);
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-xs) var(--space-sm);
+            background: #ECFDF5;
+            color: var(--success-500);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success-500);
+            border-radius: 50%;
+        }
+
+        /* Search Section */
+        .search-section {
+            background: var(--neutral-100);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+
+        .search-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--neutral-900);
+            margin-bottom: var(--space-sm);
+            text-align: center;
+        }
+
+        .search-subtitle {
+            font-size: 16px;
+            color: var(--neutral-600);
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+
+        .search-form {
+            display: flex;
+            gap: var(--space-md);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: var(--space-md);
+            border: 2px solid #E5E7EB;
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            transition: border-color var(--transition-normal);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+
+        .search-button {
+            padding: var(--space-md) var(--space-xl);
+            background: var(--primary-500);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color var(--transition-normal);
+        }
+
+        .search-button:hover {
+            background: var(--primary-700);
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .filter-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--neutral-600);
+        }
+
+        .filter-select {
+            padding: var(--space-sm);
+            border: 1px solid #E5E7EB;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            background: white;
+            min-width: 150px;
+        }
+
+        /* Results */
+        .results-section {
+            margin-top: var(--space-xl);
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .results-count {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--neutral-900);
+        }
+
+        .results-grid {
+            display: grid;
+            gap: var(--space-lg);
+        }
+
+        .entity-card {
+            background: var(--neutral-100);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+            cursor: pointer;
+        }
+
+        .entity-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .entity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-md);
+        }
+
+        .entity-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--neutral-900);
+            margin-bottom: var(--space-xs);
+        }
+
+        .entity-type {
+            font-size: 12px;
+            color: var(--neutral-600);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .risk-badge {
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .risk-high {
+            background: #FEF2F2;
+            color: var(--error-500);
+        }
+
+        .risk-medium {
+            background: #FFFBEB;
+            color: var(--warning-500);
+        }
+
+        .risk-low {
+            background: #F0FDF4;
+            color: var(--success-500);
+        }
+
+        .entity-summary {
+            color: var(--neutral-600);
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: var(--space-md);
+        }
+
+        .entity-meta {
+            display: flex;
+            gap: var(--space-lg);
+            font-size: 13px;
+            color: var(--neutral-600);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        /* Entity Detail Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--neutral-100);
+            border-radius: var(--radius-md);
+            padding: var(--space-xl);
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--neutral-600);
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: var(--space-xl);
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #E5E7EB;
+            border-top: 3px solid var(--primary-500);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto var(--space-md);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: var(--space-md);
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .filters {
+                flex-direction: column;
+            }
+
+            .results-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--space-sm);
+            }
+        }
+
+        /* Demo notice */
+        .demo-notice {
+            background: #FEF3C7;
+            border: 1px solid #F59E0B;
+            color: #92400E;
+            padding: var(--space-sm);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--space-lg);
+            font-size: 14px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">S</div>
+                    <div class="logo-text">Sanctions Research Platform</div>
+                </div>
+                <div class="status-badge">
+                    <div class="status-dot"></div>
+                    <span>Demo Version</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-container">
+            <!-- Demo Notice -->
+            <div class="demo-notice">
+                🔍 Cette version de démonstration utilise des données simulées pour la recherche de sanctions
+            </div>
+
+            <!-- Search Section -->
+            <section class="search-section">
+                <h1 class="search-title">Recherche de Sanctions</h1>
+                <p class="search-subtitle">Recherchez des personnes, entreprises et entités dans les bases de données officielles de sanctions</p>
+                
+                <form class="search-form" id="searchForm">
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        id="searchInput"
+                        placeholder="Rechercher par nom, alias ou mots-clés..."
+                        value="putin"
+                    >
+                    <button type="submit" class="search-button">🔍 Rechercher</button>
+                </form>
+
+                <!-- Filters -->
+                <div class="filters">
+                    <div class="filter-group">
+                        <label class="filter-label">Type d'Entité</label>
+                        <select class="filter-select" id="typeFilter">
+                            <option value="">Tous les types</option>
+                            <option value="Person">Personne</option>
+                            <option value="Organization">Organisation</option>
+                            <option value="Vessel">Navire</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Niveau de Risque</label>
+                        <select class="filter-select" id="riskFilter">
+                            <option value="">Tous les niveaux</option>
+                            <option value="HIGH">Élevé</option>
+                            <option value="MEDIUM">Moyen</option>
+                            <option value="LOW">Faible</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Pays</label>
+                        <select class="filter-select" id="countryFilter">
+                            <option value="">Tous les pays</option>
+                            <option value="RU">Russie</option>
+                            <option value="IQ">Irak</option>
+                            <option value="IR">Iran</option>
+                            <option value="SY">Syrie</option>
+                            <option value="KP">Corée du Nord</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section">
+                <div class="results-header">
+                    <div class="results-count" id="resultsCount">6 entités trouvées</div>
+                </div>
+                
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Recherche en cours...</p>
+                </div>
+                
+                <div class="results-grid" id="resultsGrid">
+                    <!-- Results will be populated here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Entity Detail Modal -->
+    <div class="modal" id="entityModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div id="modalContent">
+                <!-- Entity details will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock Data - Sanctions Database
+        const sanctionsData = [
+            {
+                id: 'ofac_001',
+                name: 'VLADIMIR VLADIMIROVICH PUTIN',
+                type: 'Person',
+                aliases: [{ name: 'Vladimir Putin', type: 'aka', quality: 'exact' }],
+                birth_date: '1952-10-07',
+                nationality: 'Russian',
+                country_of_residence: 'Russia',
+                countries: ['RU'],
+                addresses: [{ address: 'Presidential Administration', city: 'Moscow', country: 'Russia' }],
+                keywords: ['HEAD_OF_STATE', 'UKRAINE_RELATED'],
+                source: 'ofac',
+                source_url: 'https://ofac.treas.gov/',
+                risk_level: 'HIGH',
+                summary: 'Current President of Russia • Head of State • Ukraine-Related Sanctions',
+                last_updated: new Date().toISOString(),
+                details: {
+                    positions: ['President of Russia', 'Former KGB Officer'],
+                    sanctions: ['EU Sanctions (2022)', 'US OFAC SDN (2022)', 'UK Sanctions (2022)'],
+                    relationships: ['Russian Government', 'Security Services'],
+                    narrative: 'Vladimir Putin has been subject to multiple sanctions packages following the 2022 invasion of Ukraine. These sanctions target his inner circle and key supporters.'
+                }
+            },
+            {
+                id: 'ofac_002',
+                name: 'ROSOBORONEXPORT',
+                type: 'Organization',
+                aliases: [{ name: 'Rosoboronexport', type: 'aka', quality: 'exact' }],
+                nationality: 'Russian',
+                country_of_residence: 'Russia',
+                countries: ['RU'],
+                addresses: [{ address: '21/5 ul. Voznesensky', city: 'Moscow', country: 'Russia' }],
+                keywords: ['DEFENSE_COMPANY'],
+                source: 'ofac',
+                source_url: 'https://ofac.treas.gov/',
+                risk_level: 'MEDIUM',
+                summary: 'Russian Defense Company',
+                last_updated: new Date().toISOString(),
+                details: {
+                    activities: ['Defense Exports', 'Military Equipment'],
+                    sanctions: ['EU Sanctions (2014)', 'US OFAC (2014)'],
+                    relationships: ['Russian Government', 'Ministry of Defense'],
+                    narrative: 'Rosoboronexport is Russia\'s state intermediary for import and export of military and dual-use goods, services and technologies.'
+                }
+            },
+            {
+                id: 'ofac_003',
+                name: 'ALI HASSAN AL-MAJID',
+                type: 'Person',
+                aliases: [{ name: 'Chemical Ali', type: 'aka', quality: 'nickname' }],
+                birth_date: '1941-03-30',
+                nationality: 'Iraqi',
+                country_of_residence: 'Iraq',
+                countries: ['IQ'],
+                addresses: [{ address: '', city: 'Baghdad', country: 'Iraq' }],
+                keywords: ['CHEMICAL_WEAPONS'],
+                source: 'ofac',
+                source_url: 'https://ofac.treas.gov/',
+                risk_level: 'HIGH',
+                summary: 'Iraqi Political Figure • Chemical Weapons • Former Regime',
+                last_updated: new Date().toISOString(),
+                details: {
+                    positions: ['Cousin of Saddam Hussein', 'Former Iraqi Official'],
+                    sanctions: ['UN Sanctions (2003)', 'US OFAC (2003)'],
+                    relationships: ['Ba\'ath Party', 'Iraqi Government'],
+                    narrative: 'Ali Hassan al-Majid was a Iraqi politician known for his role in the Anfal campaign and use of chemical weapons against Kurdish populations.'
+                }
+            },
+            {
+                id: 'un_001',
+                name: 'QASEM SOLEIMANI',
+                type: 'Person',
+                aliases: [{ name: 'Qasem Soleimani', type: 'aka', quality: 'exact' }],
+                birth_date: '1957-03-11',
+                nationality: 'Iranian',
+                country_of_residence: 'Iran',
+                countries: ['IR'],
+                addresses: [{ address: 'Quds Force Headquarters', city: 'Tehran', country: 'Iran' }],
+                keywords: ['IRGC_QF', 'TERRORISM'],
+                source: 'un',
+                source_url: 'https://www.un.org/securitycouncil/sanctions/1988',
+                risk_level: 'HIGH',
+                summary: 'Former IRGC Quds Force Commander • Terrorism Sanctions',
+                last_updated: new Date().toISOString(),
+                details: {
+                    positions: ['Former Commander IRGC Quds Force'],
+                    sanctions: ['UN Sanctions (2007)', 'US OFAC (2005)'],
+                    relationships: ['IRGC', 'Iranian Government'],
+                    narrative: 'Qasem Soleimani was the commander of the IRGC Quds Force and was responsible for external military operations. He was killed in a US drone strike in 2020.'
+                }
+            },
+            {
+                id: 'eu_001',
+                name: 'BAHASAR AL-ASSAD',
+                type: 'Person',
+                aliases: [{ name: 'Bashar al-Assad', type: 'aka', quality: 'exact' }],
+                birth_date: '1965-09-11',
+                nationality: 'Syrian',
+                country_of_residence: 'Syria',
+                countries: ['SY'],
+                addresses: [{ address: 'Presidential Palace', city: 'Damascus', country: 'Syria' }],
+                keywords: ['HEAD_OF_STATE', 'SYRIA_CONFLICT'],
+                source: 'eu',
+                source_url: 'https://www.consilium.europa.eu/en/foreign-policy/sanctions/',
+                risk_level: 'HIGH',
+                summary: 'President of Syria • Syria Conflict • Human Rights Violations',
+                last_updated: new Date().toISOString(),
+                details: {
+                    positions: ['President of Syria'],
+                    sanctions: ['EU Sanctions (2011)', 'US OFAC (2011)', 'UK Sanctions (2011)'],
+                    relationships: ['Syrian Government', 'Alawite Community'],
+                    narrative: 'Bashar al-Assad has been subject to sanctions for his role in the Syrian conflict and human rights violations.'
+                }
+            },
+            {
+                id: 'uk_001',
+                name: 'KIM JONG-UN',
+                type: 'Person',
+                aliases: [{ name: 'Kim Jong-un', type: 'aka', quality: 'exact' }],
+                birth_date: '1984-02-08',
+                nationality: 'North Korean',
+                country_of_residence: 'North Korea',
+                countries: ['KP'],
+                addresses: [{ address: 'State Affairs Commission', city: 'Pyongyang', country: 'North Korea' }],
+                keywords: ['HEAD_OF_STATE', 'WMD'],
+                source: 'uk',
+                source_url: 'https://www.gov.uk/government/collections/sanctions-consolidated-list',
+                risk_level: 'HIGH',
+                summary: 'Supreme Leader of North Korea • WMD Program',
+                last_updated: new Date().toISOString(),
+                details: {
+                    positions: ['Supreme Leader of North Korea'],
+                    sanctions: ['UN Sanctions (2006)', 'EU Sanctions (2006)', 'UK Sanctions (2006)', 'US OFAC (2008)'],
+                    relationships: ['Korean Workers Party', 'Military'],
+                    narrative: 'Kim Jong-un has been subject to sanctions for North Korea\'s weapons of mass destruction programs and human rights violations.'
+                }
+            }
+        ];
+
+        // Global state
+        let currentResults = [];
+        let currentFilters = {
+            query: '',
+            type: '',
+            risk: '',
+            country: ''
+        };
+
+        // DOM Elements
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+        const typeFilter = document.getElementById('typeFilter');
+        const riskFilter = document.getElementById('riskFilter');
+        const countryFilter = document.getElementById('countryFilter');
+        const resultsGrid = document.getElementById('resultsGrid');
+        const resultsCount = document.getElementById('resultsCount');
+        const loading = document.getElementById('loading');
+        const entityModal = document.getElementById('entityModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalContent = document.getElementById('modalContent');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load initial results
+            performSearch();
+
+            // Event listeners
+            searchForm.addEventListener('submit', handleSearch);
+            typeFilter.addEventListener('change', handleFilterChange);
+            riskFilter.addEventListener('change', handleFilterChange);
+            countryFilter.addEventListener('change', handleFilterChange);
+            modalClose.addEventListener('click', closeModal);
+            entityModal.addEventListener('click', function(e) {
+                if (e.target === entityModal) closeModal();
+            });
+        });
+
+        function handleSearch(e) {
+            e.preventDefault();
+            currentFilters.query = searchInput.value.trim();
+            performSearch();
+        }
+
+        function handleFilterChange() {
+            currentFilters.type = typeFilter.value;
+            currentFilters.risk = riskFilter.value;
+            currentFilters.country = countryFilter.value;
+            performSearch();
+        }
+
+        function performSearch() {
+            showLoading(true);
+
+            // Simulate API delay
+            setTimeout(() => {
+                const filtered = filterResults();
+                displayResults(filtered);
+                showLoading(false);
+            }, 300);
+        }
+
+        function filterResults() {
+            return sanctionsData.filter(entity => {
+                // Text search
+                if (currentFilters.query) {
+                    const query = currentFilters.query.toLowerCase();
+                    const matchesName = entity.name.toLowerCase().includes(query);
+                    const matchesAliases = entity.aliases.some(alias => 
+                        alias.name.toLowerCase().includes(query)
+                    );
+                    const matchesKeywords = entity.keywords.some(keyword =>
+                        keyword.toLowerCase().includes(query)
+                    );
+                    
+                    if (!matchesName && !matchesAliases && !matchesKeywords) {
+                        return false;
+                    }
+                }
+
+                // Type filter
+                if (currentFilters.type && entity.type !== currentFilters.type) {
+                    return false;
+                }
+
+                // Risk filter
+                if (currentFilters.risk && entity.risk_level !== currentFilters.risk) {
+                    return false;
+                }
+
+                // Country filter
+                if (currentFilters.country && !entity.countries.includes(currentFilters.country)) {
+                    return false;
+                }
+
+                return true;
+            });
+        }
+
+        function displayResults(results) {
+            currentResults = results;
+            resultsCount.textContent = `${results.length} entités trouvées`;
+
+            if (results.length === 0) {
+                resultsGrid.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #6C757D;">
+                        <p>Aucune entité trouvée pour vos critères de recherche.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            resultsGrid.innerHTML = results.map(entity => `
+                <div class="entity-card" onclick="showEntityDetails('${entity.id}')">
+                    <div class="entity-header">
+                        <div>
+                            <h3 class="entity-name">${entity.name}</h3>
+                            <div class="entity-type">${entity.type}</div>
+                        </div>
+                        <span class="risk-badge risk-${entity.risk_level.toLowerCase()}">${entity.risk_level}</span>
+                    </div>
+                    
+                    <p class="entity-summary">${entity.summary}</p>
+                    
+                    <div class="entity-meta">
+                        <div class="meta-item">
+                            <span>🌍 ${entity.nationality}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span>📋 ${entity.source.toUpperCase()}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span>⚡ Dernière mise à jour: ${formatDate(entity.last_updated)}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showEntityDetails(entityId) {
+            const entity = sanctionsData.find(e => e.id === entityId);
+            if (!entity) return;
+
+            const detailsHtml = `
+                <h2 style="margin-bottom: 1rem; color: #212529;">${entity.name}</h2>
+                
+                <div style="margin-bottom: 2rem;">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                        <span class="entity-type">${entity.type}</span>
+                        <span class="risk-badge risk-${entity.risk_level.toLowerCase()}">Risque ${entity.risk_level}</span>
+                    </div>
+                    <p style="color: #495057; line-height: 1.6;">${entity.details.narrative}</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <h4 style="margin-bottom: 0.5rem; color: #212529;">Informations Personnelles</h4>
+                        ${entity.birth_date ? `<p><strong>Date de naissance:</strong> ${formatDate(entity.birth_date)}</p>` : ''}
+                        <p><strong>Nationalité:</strong> ${entity.nationality}</p>
+                        <p><strong>Lieu de résidence:</strong> ${entity.country_of_residence}</p>
+                        ${entity.addresses.length > 0 ? `<p><strong>Adresse:</strong> ${entity.addresses[0].address}</p>` : ''}
+                    </div>
+                    
+                    <div>
+                        <h4 style="margin-bottom: 0.5rem; color: #212529;">Sanctions</h4>
+                        <ul style="padding-left: 1rem;">
+                            ${entity.details.sanctions.map(sanction => `<li>${sanction}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <h4 style="margin-bottom: 0.5rem; color: #212529;">Alias</h4>
+                    <ul style="padding-left: 1rem;">
+                        ${entity.aliases.map(alias => `<li>${alias.name} (${alias.quality})</li>`).join('')}
+                    </ul>
+                </div>
+
+                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #E5E7EB; font-size: 0.875rem; color: #6C757D;">
+                    <p><strong>Source:</strong> <a href="${entity.source_url}" target="_blank" style="color: #007AFF;">${entity.source.toUpperCase()}</a></p>
+                    <p><strong>Dernière mise à jour:</strong> ${formatDate(entity.last_updated)}</p>
+                </div>
+            `;
+
+            modalContent.innerHTML = detailsHtml;
+            entityModal.classList.add('show');
+        }
+
+        function closeModal() {
+            entityModal.classList.remove('show');
+        }
+
+        function showLoading(show) {
+            if (show) {
+                loading.classList.add('show');
+                resultsGrid.style.display = 'none';
+            } else {
+                loading.classList.remove('show');
+                resultsGrid.style.display = 'grid';
+            }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-FR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+    </script>
+</body>
+</html>
